@@ -26,12 +26,12 @@ public class ApiCursoApplication implements ApplicationRunner {
 	@Transactional
 	public void run(ApplicationArguments args) throws Exception {
 
-		Categoria categoria = Categoria.builder()
-				.nome("DevOps")
-				.build();
-
-		categoriaRepository.save(categoria);
-
-		System.out.println("Curso API");
+		//		Categoria categoria = Categoria.builder()
+		//				.nome("DevOps")
+		//				.build();
+		//
+		//		categoriaRepository.save(categoria);
+		//
+		//		System.out.println("Curso API");
 	}
 }
