@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -52,6 +53,7 @@ public class Curso {
     @OneToMany(mappedBy = "curso")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OrderBy("ordem")
+    @ToString.Exclude
     private List<Aula> aulas;
 
 
