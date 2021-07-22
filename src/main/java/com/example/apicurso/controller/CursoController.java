@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/v1/cursos")
@@ -41,12 +42,22 @@ public class CursoController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cursoSalvo.getId())
                 .toUri();
 
+
         return ResponseEntity.created(location).body(cursoSalvo);
     }
 
     @GetMapping
     public ResponseEntity<List<Curso>> listar() {
         List<Curso> cursos = cursoRepository.findAll();
+
+        Consumer<Curso> fn = new Consumer<>() {
+            @Override
+            public void accept(Curso curso) {
+                System.out.println(curso);
+            }
+        };
+
+        cursos.forEach(fn);
         return ResponseEntity.ok(cursos);
     }
 
