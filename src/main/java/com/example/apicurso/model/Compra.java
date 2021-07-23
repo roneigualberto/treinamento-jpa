@@ -37,6 +37,7 @@ public class Compra {
     private Aluno aluno;
 
     @OneToMany(mappedBy = "compra", cascade = CascadeType.PERSIST)
+    @Builder.Default
     private List<ItemCompra> itens = new ArrayList<>();
 
     @CreationTimestamp

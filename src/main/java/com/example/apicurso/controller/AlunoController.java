@@ -3,6 +3,7 @@ package com.example.apicurso.controller;
 
 import com.example.apicurso.dto.CartaoDTO;
 import com.example.apicurso.dto.CompraDTO;
+import com.example.apicurso.dto.CredencialDTO;
 import com.example.apicurso.model.Aluno;
 import com.example.apicurso.model.Cartao;
 import com.example.apicurso.model.Compra;
@@ -11,6 +12,8 @@ import com.example.apicurso.repository.AlunoRepository;
 import com.example.apicurso.repository.CompraRepository;
 import com.example.apicurso.repository.CursoRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.List;
 
 @RestController
@@ -38,6 +42,8 @@ public class AlunoController {
     private final CursoRepository cursoRepository;
 
     private final CompraRepository compraRepository;
+
+    private final MessageSource messageSource;
 
     @PostMapping
     @Transactional
@@ -53,7 +59,8 @@ public class AlunoController {
 
     @GetMapping("{id}")
     public ResponseEntity<Aluno> consultar(@PathVariable Long id) {
-        Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado"));
+        String format = MessageFormat.format("Aluno {0}", id);
+        Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, messageSource.getMessage("aluno.nao.encontrado", new Object[]{id}, LocaleContextHolder.getLocale())));
         return ResponseEntity.ok(aluno);
     }
 
@@ -90,10 +97,17 @@ public class AlunoController {
                 .path("/{id}").buildAndExpand(compraSalva.getId())
                 .toUri();
 
-        List.of("test").stream().anyMatch()
-
         return ResponseEntity.created(location).body(compraSalva);
 
+    }
+
+
+    @PostMapping("/autentica")
+    public ResponseEntity<Aluno> autenticar(@RequestBody CredencialDTO credencial) {
+
+        Aluno aluno = alunoRepository.autentica(credencial).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email ou senha invalidos"));
+
+        return ResponseEntity.ok(aluno);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.example.apicurso.model;
 
 
-import br.com.caelum.stella.bean.validation.CPF;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
+import javax.validation.constraints.Email;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +43,11 @@ public class Aluno {
 //    private String cpf;
 
     @Column(nullable = false, unique = true)
+    @Email()
     private String email;
+
+    @Column
+    private String senha;
 
     @ElementCollection
     @CollectionTable(name = "aluno_contato")
