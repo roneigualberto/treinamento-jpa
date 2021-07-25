@@ -57,9 +57,4 @@ public class Aluno {
     @MapKeyEnumerated(EnumType.STRING)
     private Map<TipoContatoEnum, String> contatos = new HashMap<>();
 
-
-    public Map<TipoContatoEnum, String> getContatos() {
-
-        return contatos;
-    }
 }

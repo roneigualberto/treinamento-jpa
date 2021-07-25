@@ -101,7 +101,6 @@ public class AlunoController {
 
     }
 
-
     @PostMapping("/autentica")
     public ResponseEntity<Aluno> autenticar(@RequestBody CredencialDTO credencial) {
 

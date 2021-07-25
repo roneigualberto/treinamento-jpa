@@ -25,7 +25,6 @@ import javax.persistence.UniqueConstraint;
 @Table(uniqueConstraints = @UniqueConstraint(name = "aula_un", columnNames = {"curso_id", "ordem"}))
 public class Aula {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -34,7 +33,7 @@ public class Aula {
     @ManyToOne
     @JoinColumn(nullable = false)
     @JsonIgnore
-    private Curso curso;//curso_id
+    private Curso curso; //curso_id
 
     @Column(nullable = false)
     private String titulo;
