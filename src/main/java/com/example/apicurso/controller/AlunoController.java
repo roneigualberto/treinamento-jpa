@@ -8,9 +8,11 @@ import com.example.apicurso.model.Aluno;
 import com.example.apicurso.model.Cartao;
 import com.example.apicurso.model.Compra;
 import com.example.apicurso.model.Curso;
+import com.example.apicurso.model.Inscricao;
 import com.example.apicurso.repository.AlunoRepository;
 import com.example.apicurso.repository.CompraRepository;
 import com.example.apicurso.repository.CursoRepository;
+import com.example.apicurso.repository.InscricaoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -30,6 +32,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/alunos")
@@ -42,6 +45,8 @@ public class AlunoController {
     private final CursoRepository cursoRepository;
 
     private final CompraRepository compraRepository;
+
+    private final InscricaoRepository inscricaoRepository;
 
     private final MessageSource messageSource;
 
@@ -73,7 +78,6 @@ public class AlunoController {
 
         List<Curso> cursos = cursoRepository.findAllById(compraDTO.getCursos());
 
-
         Compra compra = Compra.builder()
                 .aluno(aluno)
                 .parcelas(compraDTO.getParcelas())
@@ -92,6 +96,11 @@ public class AlunoController {
 
         Compra compraSalva = compraRepository.save(compra);
 
+        //Incricoes
+
+        List<Inscricao> inscricoes = cursos.stream().map((curso) -> Inscricao.builder().aluno(aluno).curso(curso).build()).collect(Collectors.toList());
+
+        inscricaoRepository.saveAll(inscricoes);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(compraSalva.getId())
