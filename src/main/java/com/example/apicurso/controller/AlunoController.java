@@ -1,6 +1,7 @@
 package com.example.apicurso.controller;
 
 
+import com.example.apicurso.dto.AlunoProjectionDTO;
 import com.example.apicurso.dto.CartaoDTO;
 import com.example.apicurso.dto.CompraDTO;
 import com.example.apicurso.dto.CredencialDTO;
@@ -32,6 +33,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -116,6 +118,12 @@ public class AlunoController {
         Aluno aluno = alunoRepository.autentica(credencial).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email ou senha invalidos"));
 
         return ResponseEntity.ok(aluno);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<AlunoProjectionDTO> findByEmail(@PathVariable String email) {
+        Optional<AlunoProjectionDTO> optionalAluno = alunoRepository.findByEmail(email, AlunoProjectionDTO.class);
+        return ResponseEntity.ok(optionalAluno.get());
     }
 
 }

@@ -9,19 +9,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Repository
 @Lazy
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
 
-
     @Query("select al from Aluno al where al.email = :#{#c.email} and al.senha = :#{#c.senha}")
     Optional<Aluno> autentica(@Param("c") CredencialDTO credencial);
+
+
+    <T> Optional<T> findByEmail(String email, Class<T> projectionClass);
 
 
 //    default <T> Map<Long, T> findAll2() {
